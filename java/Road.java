@@ -1,3 +1,4 @@
 public class Road {
-    private static final int dist = 100;
+    public static final int dist = 500;
+
 }
