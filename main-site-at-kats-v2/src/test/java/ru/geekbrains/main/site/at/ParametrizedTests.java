@@ -18,56 +18,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ParametrizedTests extends BasisTest {
 
+  static Stream<Arguments> stringProvider() {
+    return Stream.of(
+            Arguments.of("Курсы",0),
+            Arguments.of("Вебинары",1),
+            Arguments.of("Форум",2),
+            Arguments.of("Блог",3),
+            Arguments.of("Тесты",4),
+            Arguments.of("Карьера",5));
+  }
 
   @DisplayName("Параметризованные тесты")
   @ParameterizedTest(name = "Переход на страницу {0}")
-  @ValueSource (strings = {"Курсы","Вебинары","Форум","Блог","Тесты","Карьера"})
-        void checkNavigation(String name) throws InterruptedException {
+  @MethodSource({"stringProvider"})
+        void checkNavigation(String name, int numberButton) {
 
       driver.manage().window().maximize();
       driver.get("https://geekbrains.ru/career");
-
-      //Курсы
-        WebElement buttonCourses = driver.findElement(By.cssSelector("[class*=\"main-page-hidden\"] [href=\"/courses\"]"));
-        buttonCourses.click();
-        WebElement headerPageCourses = driver.findElement(By.cssSelector("[class=\"gb-header__title\"]"));
-        Assertions.assertEquals(name, headerPageCourses.getText());
-        driver.findElement(By.cssSelector("div button svg[class=\"svg-icon icon-popup-close-button \"]")).click();
-
-
-        //Вебинары
-        WebElement buttonEvents = driver.findElement(By.cssSelector("[class*=\"main-page-hidden\"] [href=\"/events\"]"));
-        buttonEvents.click();
-        WebElement headerPageEvents = driver.findElement(By.cssSelector("[class=\"gb-header__title\"]"));
-        Assertions.assertEquals(name, headerPageEvents.getText());
-
-        //Форум
-        WebElement buttonTopics = driver.findElement(By.cssSelector("[class*=\"main-page-hidden\"] [href=\"/topics\"]"));
-        buttonTopics.click();
-        WebElement headerPageTopics = driver.findElement(By.cssSelector("[class=\"gb-header__title\"]"));
-        Assertions.assertEquals(name, headerPageTopics.getText());
-
-        //Блог
-//        href="/posts"
-        WebElement buttonPosts = driver.findElement(By.cssSelector("[class*=\"main-page-hidden\"] [href=\"/posts\"]"));
-        buttonPosts.click();
-        WebElement headerPagePosts = driver.findElement(By.cssSelector("[class=\"gb-header__title\"]"));
-        Assertions.assertEquals(name, headerPagePosts.getText());
-
-        //Тесты
-//        href="/tests"
-        WebElement buttonTests = driver.findElement(By.cssSelector("[class*=\"main-page-hidden\"] [href=\"/tests\"]"));
-        buttonTests.click();
-        WebElement headerPageTests = driver.findElement(By.cssSelector("[class=\"gb-header__title\"]"));
-        Assertions.assertEquals(name, headerPageTests.getText());
-
-        //Карьера
-//        href="/career"
-        WebElement buttonCareer = driver.findElement(By.cssSelector("[class*=\"main-page-hidden\"] [href=\"/career\"]"));
-        buttonCareer.click();
-        WebElement headerPageCareer = driver.findElement(By.cssSelector("[class=\"gb-header__title\"]"));
-        Assertions.assertEquals(name, headerPageCareer.getText());
-
-//
-    }
+    String[] strings= {"[href=\"/courses\"]","[href=\"/events\"]","[href=\"/topics\"]","[href=\"/posts\"]","[href=\"/tests\"]", "[href=\"/career\"]"};
+    WebElement buttonCourses = driver.findElement(By.cssSelector("[class*=\"main-page-hidden\"] "+strings[numberButton]));
+    buttonCourses.click();
+    WebElement headerPage = driver.findElement(By.cssSelector("[class=\"gb-header__title\"]"));
+    Assertions.assertEquals(name, headerPage.getText());
+        }
 }
