@@ -39,21 +39,13 @@ public class Block {
     @FindBy(css = "[class*=\"company-item\"] [href*=\"682\"]")
     WebElement textGeekProjectsAndCompanies;
 
+
     private WebDriver driver;
     public Block(WebDriver driver) {
         this.driver = driver;
     }
 
-
-    public void InputSearch(String input){
-        WebElement buttonSearch = driver.findElement(By.cssSelector("[id=\"top-menu\"] [class=\"show-search-form\"] svg"));
-        buttonSearch.click();
-
-        WebElement inputSearch = driver.findElement(By.cssSelector("input[class=\"search-panel__search-field\"]"));
-        inputSearch.sendKeys(input);
-    }
-
-    public void Waiting() {
+    public Search Waiting() {
         WebDriverWait wait = new WebDriverWait(driver, 40);
         wait.until(ExpectedConditions.textToBePresentInElement(textProfession, "Профессии"));
         wait.until(ExpectedConditions.textToBePresentInElement(textCourses, "Курсы"));
@@ -62,7 +54,7 @@ public class Block {
         wait.until(ExpectedConditions.textToBePresentInElement(textForum, "Форум"));
         wait.until(ExpectedConditions.textToBePresentInElement(textTests, "Тесты"));
         wait.until(ExpectedConditions.textToBePresentInElement(textProjectsAndCompanies, "Проекты и компании"));
-
+        return PageFactory.initElements(driver, Search.class);
     }
 
 
